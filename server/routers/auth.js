@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { check, validationResult } = require('express-validator');
 const db = require('../data/db');
+const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlewares');
 
 // Реєстрація
 router.post('/register', [
@@ -28,23 +29,51 @@ router.post('/register', [
     });
 });
 
-// // Вхід
-// router.post('/login', async (req, res) => {
-//     const { email, password } = req.body;
-//     const user = await User.findOne({ email });
+// Вхід
+router.post('/login', [
+    check('email').isEmail().withMessage('Valid email is required'),
+    check('password').not().isEmpty().withMessage('Password is required')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log('Validation errors:', errors.array());
+        return res.status(400).json({ errors: errors.array() });
+    }
 
-//     if (!user) {
-//         return res.status(401).send('Invalid email or password');
-//     }
+    const { email, password } = req.body;
 
-//     const isMatch = await bcrypt.compare(password, user.password);
+    try {
+        const query = 'SELECT * FROM users WHERE email = ?';
+        db.execute(query, [email], async (err, results) => {
+            if (err) {
+                console.log('Database error:', err.message);
+                return res.status(500).send('Error logging in: ' + err.message);
+            }
 
-//     if (!isMatch) {
-//         return res.status(401).send('Invalid email or password');
-//     }
+            if (results.length === 0) {
+                console.log('User not found');
+                return res.status(401).send('Invalid email or password');
+            }
 
-//     const token = jwt.sign({ id: user._id, role: user.role }, 'secret_key', { expiresIn: '1h' });
-//     res.json({ token });
-// });
+            const user = results[0];
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if (!isMatch) {
+                console.log('Password does not match');
+                return res.status(401).send('Invalid email or password');
+            }
+
+            const token = jwt.sign({ id: user.id, role: user.role }, 'your_secret_key', { expiresIn: '1h' });
+            res.json({ token });
+        });
+    } catch (err) {
+        console.log('Error during login:', err.message);
+        res.status(500).send('Error logging in: ' + err.message);
+    }
+});
+
+router.get('/admin', authenticateToken, authorizeRole('admin'), (req, res) => {
+    res.send('This is an admin route');
+});
 
 module.exports = router;
