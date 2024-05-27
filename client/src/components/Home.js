@@ -12,7 +12,6 @@ const Home = ({ handleLogout, isAuthenticated }) => {
     return (
         <div>
             <h2>Welcome to the Home Page</h2>
-            {isAuthenticated && <button onClick={logoutAndNavigate} className="btn btn-danger">Logout</button>}
         </div>
     );
 };

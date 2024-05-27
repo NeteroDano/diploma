@@ -4,6 +4,11 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import Home from './components/Home';
+import Search from './components/Search';
+import SearchResults from './components/SearchResults';
+import Messages from './components/Messages';
+import CreateMessage from './components/CreateMessage';
+import UserProfile from './components/UserProfile';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,7 +17,6 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        // Перевіряємо, чи є токен у локальному сховищі
         const token = localStorage.getItem('token');
         if (token) {
             setIsAuthenticated(true);
@@ -41,7 +45,7 @@ function App() {
                                         <Link className="nav-link" to="/">Home</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/profile">Profile</Link>
+                                        <Link className="nav-link" to="/profiles/me">Profile</Link>
                                     </li>
                                     <li className="nav-item">
                                         <button className="btn btn-link nav-link" onClick={handleLogout}>Logout</button>
@@ -61,6 +65,7 @@ function App() {
                                 </>
                             )}
                         </ul>
+                        {isAuthenticated && <Search />}
                     </div>
                 </nav>
                 <div className="container mt-5">
@@ -68,7 +73,10 @@ function App() {
                         <Route path="/register" element={<PublicRoute component={() => <Register handleLogin={handleLogin} />} isAuthenticated={isAuthenticated} />} />
                         <Route path="/login" element={<PublicRoute component={() => <Login handleLogin={handleLogin} />} isAuthenticated={isAuthenticated} />} />
                         <Route path="/" element={<Home handleLogout={handleLogout} isAuthenticated={isAuthenticated} />} />
-                        <Route path="/profile" element={<PrivateRoute component={Profile} isAuthenticated={isAuthenticated} />} />
+                        <Route path="/profiles/me" element={<PrivateRoute component={Profile} isAuthenticated={isAuthenticated} />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/search-results" element={<SearchResults />} />
+                        <Route path="/profile/:name/*" element={<UserProfile />} />
                     </Routes>
                 </div>
             </div>
