@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const newUser = req.body;
 
-    res.send(`User ${newUser.name} created!`);
+    res.json({message: `User ${newUser.name} created!`});
 });
 
 module.exports = router;
