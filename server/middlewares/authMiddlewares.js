@@ -11,7 +11,7 @@ function authenticateToken(req, res, next) {
     if (!token) return res.status(401).json({ message: 'Access denied' });
 
     try {
-        const verified = jwt.verify(token, 'your_secret_key');
+        const verified = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || 'your_secret_key');
         req.user = verified;
         next();
     } catch (err) {
@@ -20,9 +20,9 @@ function authenticateToken(req, res, next) {
 }
 
 // Middleware для перевірки ролі
-function authorizeRole(role) {
+function authorizeRole(roles) {
     return (req, res, next) => {
-        if (req.user.role !== role) {
+        if (!roles.includes(req.user.role)) {
             return res.status(403).json({ message: 'Access forbidden' });
         }
         next();

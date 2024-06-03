@@ -8,22 +8,27 @@ const { authenticateToken, validateId } = require('../middlewares/authMiddleware
 // Налаштування multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+        cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname)
     }
 });
 const upload = multer({ storage: storage });
 
 // Отримання профілю користувача
-router.get('/me', authenticateToken, validateId, (req, res) => {
+router.get('/me', authenticateToken, (req, res) => {
     const userId = req.user.id;
 
-    const userQuery = 'SELECT id, name, email, role FROM users WHERE id = ?';
-    const profileQuery = 'SELECT bio, avatar FROM profiles WHERE users_id = ?';
-
-    db.query(userQuery, [userId], (err, userResults) => {
+    const getUserProfileQuery = `
+        SELECT u.id, u.name, u.email, u.role, p.bio, p.avatar
+        FROM users u
+        LEFT JOIN profiles p ON u.id = p.users_id
+        WHERE u.id = ?
+    `;
+    
+    db.query(getUserProfileQuery, [userId], (err, userResults) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal server error' });
@@ -33,13 +38,25 @@ router.get('/me', authenticateToken, validateId, (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        db.query(profileQuery, [userId], (err, profileResults) => {
+        const user = userResults[0];
+
+        const getUserRewardsQuery = `
+            SELECT r.id, r.name, r.description, r.image, ur.obtained_at
+            FROM user_rewards ur
+            JOIN rewards r ON ur.rewards_id = r.id
+            WHERE ur.users_id = ?
+        `;
+        
+        db.query(getUserRewardsQuery, [userId], (err, rewardResults) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Internal server error' });
             }
 
-            return res.json({ ...userResults[0], ...profileResults[0] });
+            res.json({
+                ...user,
+                rewards: rewardResults
+            });
         });
     });
 });

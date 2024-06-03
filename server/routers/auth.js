@@ -72,7 +72,7 @@ router.post('/login', [
     }
 });
 
-router.get('/admin', authenticateToken, authorizeRole('admin'), (req, res) => {
+router.get('/admin', authenticateToken, authorizeRole(['admin']), (req, res) => {
     res.send('This is an admin route');
 });
 
