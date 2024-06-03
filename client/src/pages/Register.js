@@ -13,13 +13,12 @@ function Register({ handleLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3000/auth/register', {
+            const response = await axios.post('http://localhost:3000/auth/register', {
                 name,
                 email,
                 password
             });
-            handleLogin();
-            setMessage('User registered successfully');
+            setMessage(response.data.message);
             navigate('/login');
         } catch (error) {
             if (error.response && error.response.data.errors) {
@@ -39,7 +38,7 @@ function Register({ handleLogin }) {
                         <label htmlFor="name">Name:</label>
                         <input
                             type="text"
-                            placeholder="Введіть ім'я"
+                            placeholder="Enter name"
                             className="form-control"
                             id="name"
                             value={name}
@@ -51,7 +50,7 @@ function Register({ handleLogin }) {
                         <label htmlFor="email">Email:</label>
                         <input
                             type="email"
-                            placeholder='Введіть пошту'
+                            placeholder='Enter email'
                             className="form-control"
                             id="email"
                             value={email}
@@ -63,7 +62,7 @@ function Register({ handleLogin }) {
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
-                            placeholder="Введіть пароль"
+                            placeholder="Enter password"
                             className="form-control"
                             id="password"
                             value={password}
@@ -72,8 +71,8 @@ function Register({ handleLogin }) {
                         />
                     </div>
                     <div className="d-flex justify-content-between">
-                    <button type="submit" className="btn btn-secondary mt-3" onClick={() => navigate('/login')}>Login</button>
-                    <button type="submit" className="btn btn-success mt-3">Register</button>
+                        <button type="button" className="btn btn-secondary mt-3" onClick={() => navigate('/login')}>Login</button>
+                        <button type="submit" className="btn btn-success mt-3">Register</button>
                     </div>
                 </form>
                 {message && <p className="mt-3">{message}</p>}
