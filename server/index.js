@@ -13,7 +13,6 @@ const rewardsRouter = require('./routers/rewards');
 
 
 const app = express();
-//const port = 3000;
 const port = process.env.PORT || 3000;
 
 app.use(cors());
@@ -32,13 +31,7 @@ app.use('/appeals', appealsRouter);
 app.use('/answers', answersRouter);
 app.use('/rewards', rewardsRouter);
 
-//New
-app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'));
-});
-//
 app.get('/', (req, res) => {
     res.send('Welcome to the Web Application!');
 });
