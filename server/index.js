@@ -15,7 +15,10 @@ const rewardsRouter = require('./routers/rewards');
 const app = express();
 //const port = process.env.PORT || 3000;
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+    origin: 'https://anifans.netlify.app'
+  }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/verification_docs', express.static(path.join(__dirname, 'verification_docs')));
