@@ -13,7 +13,7 @@ const rewardsRouter = require('./routers/rewards');
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+//const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +36,11 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Web Application!');
 });
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running at port ${port}`);
 });
