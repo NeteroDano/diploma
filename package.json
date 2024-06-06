@@ -1,8 +1,11 @@
 {
-    "name": "diploma",
-    "version": "1.0.0",
-    "scripts": {
-      "start": "cd server && npm install && npm start"
-    }
-  }
-  
+  "name": "diploma",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd server && npm install && npm start"
+  },
+  "description": "Degree porject",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
+}
