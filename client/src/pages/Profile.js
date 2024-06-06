@@ -48,18 +48,18 @@ const Profile = () => {
         }
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.put(
-                // 'http://localhost:3000/profiles/me,'
-                'https://diploma-2507928da0ba.herokuapp.com/profiles/me',
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
-                    },
-                }
-            );
+            // const token = localStorage.getItem('token');
+            // const response = await axios.put(
+            //     // 'http://localhost:3000/profiles/me,'
+            //     'https://diploma-2507928da0ba.herokuapp.com/profiles/me',
+            //     formData,
+            //     {
+            //         headers: {
+            //             Authorization: `Bearer ${token}`,
+            //             'Content-Type': 'multipart/form-data',
+            //         },
+            //     }
+            // );
             const updatedProfile = { ...profile, bio };
             if (avatar) {
                 updatedProfile.avatar = URL.createObjectURL(avatar);

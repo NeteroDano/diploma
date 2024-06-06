@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import moment from 'moment-timezone';
@@ -17,11 +17,11 @@ const Messages = () => {
     const [answers, setAnswers] = useState({});
     const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchMessages();
-    }, [name, category, sort, order, view]);
+    // useEffect(() => {
+    //     fetchMessages();
+    // }, [name, category, sort, order, view]);
 
-    const fetchMessages = async () => {
+    const fetchMessages = useCallback(async () => {
         const token = localStorage.getItem('token');
         try {
             // const response = await axios.get(`http://localhost:3000/messages/${name}/${category}`, {
@@ -43,7 +43,11 @@ const Messages = () => {
         } catch (error) {
             console.error('Error fetching messages', error);
         }
-    };
+    }, [name, category, sort, order, view]);
+
+    useEffect(() => {
+        fetchMessages();
+    }, [fetchMessages]);
 
     const fetchAnswers = async (messageId) => {
         const token = localStorage.getItem('token');

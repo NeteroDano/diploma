@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchResults = () => {
   const location = useLocation();
-  const { results, role } = location.state || { results: [], role: '' };
+  const { results/* , role */ } = location.state || { results: []/* , role: '' */ };
   const navigate = useNavigate();
 
   const handleResultClick = (name) => {
