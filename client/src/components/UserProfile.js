@@ -13,7 +13,8 @@ const UserProfile = () => {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:3000/profiles/${name}`, {
+                // const response = await axios.get(`http://localhost:3000/profiles/${name}`, {
+                const response = await axios.get(`https://diploma-2507928da0ba.herokuapp.com/profiles/${name}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -37,7 +38,8 @@ const UserProfile = () => {
                             <div className="mr-4">
                                 {profile.avatar ? (
                                     <img 
-                                        src={profile.avatar.startsWith('blob:') ? profile.avatar : `http://localhost:3000/uploads/${profile.avatar}`} 
+                                        // src={profile.avatar.startsWith('blob:') ? profile.avatar : `http://localhost:3000/uploads/${profile.avatar}`} 
+                                        src={profile.avatar.startsWith('blob:') ? profile.avatar : `https://diploma-2507928da0ba.herokuapp.com/uploads/${profile.avatar}`}
                                         alt="Avatar" 
                                         className="img-thumbnail"
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}

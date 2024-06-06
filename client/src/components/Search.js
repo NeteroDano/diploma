@@ -16,7 +16,8 @@ const Search = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:3000/search`, {
+      // const response = await axios.get(`http://localhost:3000/search`, {
+      const response = await axios.get(`https://diploma-2507928da0ba.herokuapp.com/search`, {
         params: { role, query },
         headers: { Authorization: `Bearer ${token}` },
       });
