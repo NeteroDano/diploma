@@ -30,17 +30,5 @@ connection.connect((err) => {
     }
 });
 
-//module.exports = connection;
-
-connection.query('SELECT * FROM users', (err, results) => {
-    if (err) throw err;
-    console.log(results);
-    connection.end((err) => {
-        if (err) {
-            console.error('Error closing connection:', err);
-        } else {
-            console.log('Connection closed');
-        }
-    });
-});
+module.exports = connection;
 
