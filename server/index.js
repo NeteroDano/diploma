@@ -14,10 +14,20 @@ const rewardsRouter = require('./routers/rewards');
 
 const app = express();
 //const port = process.env.PORT || 3000;
+const allowedOrigins = ['https://anifans.netlify.app', 'https://main--anifans.netlify.app'];
 
 // app.use(cors());
-app.use(cors({
-    origin: 'https://anifans.netlify.app'
+// app.use(cors({
+//     origin: 'https://anifans.netlify.app'
+//   }));
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
   }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
