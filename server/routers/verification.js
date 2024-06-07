@@ -8,7 +8,7 @@ const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlew
 // Налаштування multer для завантаження файлів
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'verification_docs/');
+        cb(null, '../verification_docs/');
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
@@ -26,7 +26,6 @@ router.post('/submit', authenticateToken, upload.single('documents'), authorizeR
         return res.status(400).json({ error: 'Full name, content, desired role, and documents are required.' });
     }
 
-    // Перевірка на існування верифікаційного запиту
     const checkQuery = 'SELECT * FROM verifications WHERE users_id = ?';
     db.query(checkQuery, [userId], (err, results) => {
         if (err) {
@@ -38,7 +37,6 @@ router.post('/submit', authenticateToken, upload.single('documents'), authorizeR
             return res.status(400).json({ error: 'You have already submitted a verification request.' });
         }
 
-        // Якщо запиту немає, вставляємо новий
         const insertQuery = `
             INSERT INTO verifications (users_id, full_name, content, documents, desired_role)
             VALUES (?, ?, ?, ?, ?)
@@ -96,7 +94,7 @@ router.get('/admin/requests', authenticateToken, authorizeRole(['admin']), (req,
 // Маршрут для верифікації або відмови у верифікації
 router.post('/verify/:id', authenticateToken, authorizeRole(['admin']), (req, res) => {
     const { id } = req.params;
-    const { status, message = '' } = req.body;  // Додаємо значення за замовчуванням для message
+    const { status, message = '' } = req.body;
 
     if (!status || !['approved', 'rejected'].includes(status)) {
         return res.status(400).json({ error: 'Invalid status' });
