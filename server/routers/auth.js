@@ -51,13 +51,16 @@ router.post('/register', [
     }
 
     const { name, email, password } = req.body;
+    console.log(`Registering user: ${name}, ${email}`);
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
     db.query(query, [name, email, hashedPassword, 'user'], (err, results) => {
         if (err) {
+            console.error('Database error:', err);
             return res.status(500).send('Error registering user: ' + err.message);
         }
+        console.log('User registered:', results);
         res.status(201).send('User registered successfully');
     });
 });
