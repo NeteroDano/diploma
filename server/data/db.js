@@ -1,12 +1,12 @@
 const mysql = require('mysql2');
 
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     port: '3306',
-//     user: 'city',
-//     password: '02110211W-',
-//     database: 'diploma'
-// });
+const connection = mysql.createConnection({
+    host: 'localhost',
+    port: '3306',
+    user: 'city',
+    password: '02110211W-',
+    database: 'diploma'
+});
 
 // const connection = mysql.createConnection({
 //     host: 'eu-cluster-west-01.k8s.cleardb.net',
@@ -15,12 +15,22 @@ const mysql = require('mysql2');
 //     database: 'heroku_0079a0c4500b5ab'
 // });
 
-const connection = mysql.createConnection({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE
-});
+// const connection = mysql.createConnection({
+//     host: process.env.MYSQL_HOST,
+//     user: process.env.MYSQL_USER,
+//     password: process.env.MYSQL_PASSWORD,
+//     database: process.env.MYSQL_DATABASE
+// });
+
+// const pool = mysql.createPool({
+//     host: process.env.MYSQL_HOST,
+//     user: process.env.MYSQL_USER,
+//     password: process.env.MYSQL_PASSWORD,
+//     database: process.env.MYSQL_DATABASE,
+//     waitForConnections: true,
+//     connectionLimit: 20,
+//     queueLimit: 0
+// });
 
 connection.connect((err) => {
     if (err) {
@@ -32,3 +42,4 @@ connection.connect((err) => {
 
 module.exports = connection;
 
+// module.exports = pool.promise();

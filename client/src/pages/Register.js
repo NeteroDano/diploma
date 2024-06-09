@@ -13,8 +13,8 @@ function Register({ handleLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // const response = await axios.post('http://localhost:3000/auth/register', {
-            const response = await axios.post('https://diploma-2507928da0ba.herokuapp.com/auth/register', {
+             const response = await axios.post('http://localhost:3000/auth/register', {
+           // const response = await axios.post('https://diploma-2507928da0ba.herokuapp.com/auth/register', {
                 name,
                 email,
                 password

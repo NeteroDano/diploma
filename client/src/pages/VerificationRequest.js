@@ -19,8 +19,8 @@ const VerificationRequest = () => {
     
         try {
             const token = localStorage.getItem('token');
-            // await axios.post('http://localhost:3000/verification/submit', formData, {
-            await axios.post('https://diploma-2507928da0ba.herokuapp.com/verification/submit', formData, {
+             await axios.post('http://localhost:3000/verification/submit', formData, {
+          //  await axios.post('https://diploma-2507928da0ba.herokuapp.com/verification/submit', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

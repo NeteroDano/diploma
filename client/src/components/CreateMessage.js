@@ -11,8 +11,8 @@ const CreateMessage = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            // await axios.post('http://localhost:3000/messages', {
-            await axios.post('https://diploma-2507928da0ba.herokuapp.com/messages', {
+             await axios.post('http://localhost:3000/messages', {
+           // await axios.post('https://diploma-2507928da0ba.herokuapp.com/messages', {
                 targetName: name,
                 category,
                 content,

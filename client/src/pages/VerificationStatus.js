@@ -12,8 +12,8 @@ const VerificationStatus = () => {
         const fetchStatus = async () => {
             const token = localStorage.getItem('token');
             try {
-                // const response = await axios.get('http://localhost:3000/verification/status', {
-                const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/verification/status', {
+                 const response = await axios.get('http://localhost:3000/verification/status', {
+               // const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/verification/status', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -57,11 +57,11 @@ const VerificationStatus = () => {
                             {status.documents.split(',').map((doc, index) => (
                                 <div key={index}>
                                     {doc.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
-                                    // <img src={`http://localhost:3000/verification_docs/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
-                                    <img src={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
+                                     <img src={`http://localhost:3000/verification_docs/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
+                                  //  <img src={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
                                     ) : (
-                                    // <a href={`http://localhost:3000/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
-                                    <a href={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
+                                     <a href={`http://localhost:3000/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
+                                  //  <a href={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
                                     )}
                                 </div>
                             ))}

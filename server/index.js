@@ -10,6 +10,8 @@ const verificationRouter = require('./routers/verification');
 const appealsRouter = require('./routers/appeals');
 const answersRouter = require('./routers/answers');
 const rewardsRouter = require('./routers/rewards');
+require('dotenv').config();
+
 
 
 const app = express();

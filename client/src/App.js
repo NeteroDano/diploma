@@ -49,8 +49,8 @@ function App() {
         const token = localStorage.getItem('token');
         if (token) {
             setIsAuthenticated(true);
-            // axios.get('http://localhost:3000/profiles/me', {
-            axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
+             axios.get('http://localhost:3000/profiles/me', {
+            //axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -71,8 +71,8 @@ function App() {
     const handleLogin = () => {
         setIsAuthenticated(true);
         const token = localStorage.getItem('token');
-        // axios.get('http://localhost:3000/profiles/me', {
-        axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
+         axios.get('http://localhost:3000/profiles/me', {
+        //axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
