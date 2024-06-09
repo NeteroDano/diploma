@@ -13,13 +13,13 @@ function Register({ handleLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-             const response = await axios.post('http://localhost:3000/auth/register', {
-           // const response = await axios.post('https://diploma-2507928da0ba.herokuapp.com/auth/register', {
+            const response = await axios.post('http://localhost:3000/auth/register', {
                 name,
                 email,
                 password
             });
-            setMessage(response.data.message);
+            handleLogin();
+            setMessage('User registered successfully');
             navigate('/login');
         } catch (error) {
             if (error.response && error.response.data.errors) {
@@ -39,7 +39,7 @@ function Register({ handleLogin }) {
                         <label htmlFor="name">Name:</label>
                         <input
                             type="text"
-                            placeholder="Enter name"
+                            placeholder="Введіть ім'я"
                             className="form-control"
                             id="name"
                             value={name}
@@ -51,7 +51,7 @@ function Register({ handleLogin }) {
                         <label htmlFor="email">Email:</label>
                         <input
                             type="email"
-                            placeholder='Enter email'
+                            placeholder='Введіть пошту'
                             className="form-control"
                             id="email"
                             value={email}
@@ -63,7 +63,7 @@ function Register({ handleLogin }) {
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
-                            placeholder="Enter password"
+                            placeholder="Введіть пароль"
                             className="form-control"
                             id="password"
                             value={password}
@@ -72,8 +72,8 @@ function Register({ handleLogin }) {
                         />
                     </div>
                     <div className="d-flex justify-content-between">
-                        <button type="button" className="btn btn-secondary mt-3" onClick={() => navigate('/login')}>Login</button>
-                        <button type="submit" className="btn btn-success mt-3">Register</button>
+                    <button type="submit" className="btn btn-secondary mt-3" onClick={() => navigate('/login')}>Login</button>
+                    <button type="submit" className="btn btn-success mt-3">Register</button>
                     </div>
                 </form>
                 {message && <p className="mt-3">{message}</p>}
