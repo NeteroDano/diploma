@@ -12,7 +12,6 @@ function Login({ handleLogin }) {
         e.preventDefault();
         try {
              const response = await axios.post('http://localhost:3000/auth/login', {
-          //  const response = await axios.post('https://diploma-2507928da0ba.herokuapp.com/auth/login', {
                 email,
                 password
             });

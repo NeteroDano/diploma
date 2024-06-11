@@ -18,7 +18,6 @@ const VerificationAppeal = () => {
             const token = localStorage.getItem('token');
             console.log('Submitting appeal with data:', { content, documents });
              const response = await axios.post('http://localhost:3000/appeals/submit', formData, {
-           // const response = await axios.post('https://diploma-2507928da0ba.herokuapp.com/appeals/submit', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

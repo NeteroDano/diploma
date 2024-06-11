@@ -22,7 +22,6 @@ const CreateReward = () => {
 
         try {
              await axios.post('http://localhost:3000/rewards', formData, {
-          //  await axios.post('https://diploma-2507928da0ba.herokuapp.com/rewards', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

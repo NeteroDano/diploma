@@ -14,7 +14,6 @@ const Rewards = () => {
         const token = localStorage.getItem('token');
         try {
              const response = await axios.get('http://localhost:3000/rewards', {
-         //   const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/rewards', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -30,7 +29,6 @@ const Rewards = () => {
         const token = localStorage.getItem('token');
         try {
              const response = await axios.get('http://localhost:3000/profiles/me', {
-          //  const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -46,7 +44,6 @@ const Rewards = () => {
         const token = localStorage.getItem('token');
         try {
             await axios.delete(`http://localhost:3000/rewards/${id}`, {
-           // await axios.delete(`https://diploma-2507928da0ba.herokuapp.com/rewards/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -71,7 +68,6 @@ const Rewards = () => {
                             <p><strong>Condition:</strong> {reward.condition_type} - {reward.condition_value}</p>
                             {reward.image ? (
                                  <img src={`http://localhost:3000/rewards/images/${reward.image}`} alt="Reward" className="img-thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-                               // <img src={`https://diploma-2507928da0ba.herokuapp.com/rewards/images/${reward.image}`} alt="Reward" className="img-thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
                             ) : (
                                 <div className="img-thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }}>
                                     No image available

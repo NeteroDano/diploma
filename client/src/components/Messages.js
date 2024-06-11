@@ -25,7 +25,6 @@ const Messages = () => {
         const token = localStorage.getItem('token');
         try {
              const response = await axios.get(`http://localhost:3000/messages/${name}/${category}`, {
-          //  const response = await axios.get(`https://diploma-2507928da0ba.herokuapp.com/messages/${name}/${category}`, {
                 params: { sort, order, view },
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -34,7 +33,6 @@ const Messages = () => {
             setMessages(response.data);
 
              const userResponse = await axios.get('http://localhost:3000/profiles/me', {
-          //  const userResponse = await axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -53,7 +51,6 @@ const Messages = () => {
         const token = localStorage.getItem('token');
         try {
              const response = await axios.get(`http://localhost:3000/answers/messages/${messageId}`, {
-           // const response = await axios.get(`https://diploma-2507928da0ba.herokuapp.com/answers/messages/${messageId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -68,7 +65,6 @@ const Messages = () => {
         const token = localStorage.getItem('token');
         try {
              await axios.post(`http://localhost:3000/messages/${id}/rate`, { rating }, {
-           // await axios.post(`https://diploma-2507928da0ba.herokuapp.com/messages/${id}/rate`, { rating }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -99,7 +95,6 @@ const Messages = () => {
         const token = localStorage.getItem('token');
         try {
              await axios.delete(`http://localhost:3000/messages/${id}`, {
-           // await axios.delete(`https://diploma-2507928da0ba.herokuapp.com/messages/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -121,7 +116,6 @@ const Messages = () => {
 
         try {
              const response = await axios.post('http://localhost:3000/answers', formData, {
-           // const response = await axios.post('https://diploma-2507928da0ba.herokuapp.com/answers', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -163,13 +157,10 @@ const Messages = () => {
         const fileExtension = filePath.split('.').pop().toLowerCase();
         if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
              return <img src={`http://localhost:3000/uploads/${filePath}`} alt="Attached file" style={{ maxWidth: '100%', maxHeight: '400px' }} />;
-          //  return <img src={`https://diploma-2507928da0ba.herokuapp.com/uploads/${filePath}`} alt="Attached file" style={{ maxWidth: '100%', maxHeight: '400px' }} />;
         } else if (fileExtension === 'pdf') {
              return <iframe src={`http://localhost:3000/uploads/${filePath}`} title="Attached file" style={{ width: '100%', height: '400px' }}></iframe>;
-         //   return <iframe src={`https://diploma-2507928da0ba.herokuapp.com/uploads/${filePath}`} title="Attached file" style={{ width: '100%', height: '400px' }}></iframe>;
         } else {
              return <a href={`http://localhost:3000/uploads/${filePath}`} target="_blank" rel="noopener noreferrer">View attached file</a>;
-          //  return <a href={`https://diploma-2507928da0ba.herokuapp.com/uploads/${filePath}`} target="_blank" rel="noopener noreferrer">View attached file</a>;
         }
     };
 

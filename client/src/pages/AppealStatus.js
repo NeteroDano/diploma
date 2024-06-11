@@ -13,7 +13,6 @@ const AppealStatus = () => {
             const token = localStorage.getItem('token');
             try {
                  const response = await axios.get('http://localhost:3000/appeals/status/latest', {
-               // const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/appeals/status/latest', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -55,11 +54,9 @@ const AppealStatus = () => {
                                 <div key={index}>
                                     {doc.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
                                      <img src={`http://localhost:3000/verification_docs/${doc}`} alt={`Document ${index + 1}`} 
-                                //    <img src={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} alt={`Document ${index + 1}`} 
                                     className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
                                     ) : (
                                      <a href={`http://localhost:3000/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
-                                 //   <a href={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
                                     )}
                                 </div>
                             ))}

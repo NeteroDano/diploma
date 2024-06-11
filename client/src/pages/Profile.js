@@ -16,7 +16,6 @@ const Profile = () => {
             try {
                 const token = localStorage.getItem('token');
                  const response = await axios.get('http://localhost:3000/profiles/me', {
-               // const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -91,14 +90,12 @@ const Profile = () => {
         const token = localStorage.getItem('token');
         try {
              await axios.post('http://localhost:3000/rewards/check-rewards', {}, {
-           // await axios.post('https://diploma-2507928da0ba.herokuapp.com/rewards/check-rewards', {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             alert('Rewards checked successfully');
              const updatedProfileResponse = await axios.get('http://localhost:3000/profiles/me', {
-           // const updatedProfileResponse = await axios.get('https://diploma-2507928da0ba.herokuapp.com/profiles/me', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -121,7 +118,6 @@ const Profile = () => {
                                 {profile.avatar ? (
                                     <img 
                                          src={profile.avatar.startsWith('blob:') ? profile.avatar : `http://localhost:3000/uploads/${profile.avatar}`} 
-                                       // src={profile.avatar.startsWith('blob:') ? profile.avatar : `https://diploma-2507928da0ba.herokuapp.com/uploads/${profile.avatar}`} 
                                         alt="Avatar" 
                                         className="img-thumbnail"
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}
@@ -180,7 +176,6 @@ const Profile = () => {
                                                         <p><strong>Obtained At:</strong> {new Date(reward.obtained_at).toLocaleString()}</p>
                                                         {reward.image && (
                                                              <img src={`http://localhost:3000/rewards/images/${reward.image}`} alt="Reward" className="img-thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-                                                           // <img src={`https://diploma-2507928da0ba.herokuapp.com/rewards/images/${reward.image}`} alt="Reward" className="img-thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
                                                         )}
                                                     </li>
                                                 ))

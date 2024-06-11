@@ -12,7 +12,6 @@ const VerificationAdmin = () => {
             const token = localStorage.getItem('token');
             try {
                  const response = await axios.get('http://localhost:3000/verification/admin/requests', {
-               // const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/verification/admin/requests', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -27,7 +26,6 @@ const VerificationAdmin = () => {
             const token = localStorage.getItem('token');
             try {
                  const response = await axios.get('http://localhost:3000/appeals/admin/requests', {
-               // const response = await axios.get('https://diploma-2507928da0ba.herokuapp.com/appeals/admin/requests', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -46,7 +44,6 @@ const VerificationAdmin = () => {
         const token = localStorage.getItem('token');
         try {
              await axios.post(`http://localhost:3000/verification/verify/${id}`, {
-           // await axios.post(`https://diploma-2507928da0ba.herokuapp.com/verification/verify/${id}`, {
                 status: decision,
                 message: message
             }, {
@@ -67,7 +64,6 @@ const VerificationAdmin = () => {
         const token = localStorage.getItem('token');
         try {
              await axios.post(`http://localhost:3000/appeals/verify/${id}`, {
-          //  await axios.post(`https://diploma-2507928da0ba.herokuapp.com/appeals/verify/${id}`, {
                 status: decision,
                 message: message
             }, {
@@ -109,10 +105,8 @@ const VerificationAdmin = () => {
                                             <div key={index}>
                                                 {doc.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
                                                  <img src={`http://localhost:3000/uploads/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
-                                               // <img src={`https://diploma-2507928da0ba.herokuapp.com/uploads/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
                                                 ) : (
                                                  <a href={`http://localhost:3000/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
-                                              //  <a href={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
                                             )}
                                         </div>
                                         ))}
@@ -162,10 +156,8 @@ const VerificationAdmin = () => {
                                             <div key={index}>
                                                 {doc.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
                                                  <img src={`http://localhost:3000/uploads/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
-                                              //  <img src={`https://diploma-2507928da0ba.herokuapp.com/uploads/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
                                                 ) : (
                                                  <a href={`http://localhost:3000/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
-                                              //  <a href={`https://diploma-2507928da0ba.herokuapp.com/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
                                             )}
                                         </div>
                                         ))}
