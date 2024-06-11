@@ -21,7 +21,6 @@ const Search = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate('/search-results', { state: { results: response.data } });
-      alert('Search performed successfully');
     } catch (error) {
       console.error('Error performing search', error);
       alert('Failed to perform search');

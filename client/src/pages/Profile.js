@@ -22,7 +22,6 @@ const Profile = () => {
                 });
                 setProfile(response.data);
                 setBio(response.data.bio || '');
-                alert('Profile fetched successfully');
             } catch (error) {
                 console.error('Error fetching profile', error);
                 if (error.response && error.response.status === 401) {
