@@ -86,8 +86,8 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <Navbar bg="light" expand="lg">
-                    <Navbar.Brand>My Web App</Navbar.Brand>
+                <Navbar bg="info" expand="lg">
+                    <Navbar.Brand>AniFans</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
@@ -96,11 +96,11 @@ function App() {
                                     <Nav.Link as={Link} to="/">Home</Nav.Link>
                                     <Nav.Link as={Link} to="/profiles/me">Profile</Nav.Link>
                                     <NavDropdown title="Verification" id="basic-nav-dropdown">
-                                        <NavDropdown.Item as={Link} to="/verification/status">Verification Status</NavDropdown.Item>
                                         <NavDropdown.Item as={Link} to="/verification/submit">Verification Request</NavDropdown.Item>
-                                        <NavDropdown.Item as={Link} to="/admin/verification">Verification Admin</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/verification/status">Verification Status</NavDropdown.Item>
                                         <NavDropdown.Item as={Link} to="/verification/appeal">Verification Appeal</NavDropdown.Item>
                                         <NavDropdown.Item as={Link} to="/appeal/status">Appeal Status</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/admin/verification">Verification Admin</NavDropdown.Item>
                                     </NavDropdown>
                                     <NavDropdown title="Rewards" id="rewards-nav-dropdown">
                                         <NavDropdown.Item as={Link} to="/rewards">View Rewards</NavDropdown.Item>

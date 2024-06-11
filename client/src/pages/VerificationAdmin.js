@@ -126,14 +126,14 @@ const VerificationAdmin = () => {
                                 }}>
                                     <Form.Group controlId="decision">
                                         <Form.Label>Decision</Form.Label>
-                                        <Form.Control as="select">
+                                        <Form.Control as="select" style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}>
                                             <option value="approved">Approve</option>
                                             <option value="rejected">Reject</option>
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId="message">
                                         <Form.Label>Message</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter message" />
+                                        <Form.Control type="text" placeholder="Enter message" style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}/>
                                     </Form.Group>
                                     <Button variant="primary" type="submit" className="mt-3">Submit</Button>
                                 </Form>
@@ -179,14 +179,14 @@ const VerificationAdmin = () => {
                                 }}>
                                     <Form.Group controlId="decision">
                                         <Form.Label>Decision</Form.Label>
-                                        <Form.Control as="select">
+                                        <Form.Control as="select" style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}>
                                             <option value="approved">Approve</option>
                                             <option value="rejected">Reject</option>
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId="message">
                                         <Form.Label>Message</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter message" />
+                                        <Form.Control type="text" placeholder="Enter message" style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}/>
                                     </Form.Group>
                                     <Button variant="primary" type="submit" className="mt-3">Submit</Button>
                                 </Form>

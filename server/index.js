@@ -15,22 +15,9 @@ require('dotenv').config();
 
 
 const app = express();
-//const port = process.env.PORT || 3000;
-const allowedOrigins = ['https://anifans.netlify.app', 'https://main--anifans.netlify.app'];
+const port = 3000;
 
-// app.use(cors());
-// app.use(cors({
-//     origin: 'https://anifans.netlify.app'
-//   }));
-  app.use(cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-  }));
+app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/verification_docs', express.static(path.join(__dirname, 'verification_docs')));
@@ -51,11 +38,6 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Web Application!');
 });
 
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 3000;
-}
-
 app.listen(port, () => {
-    console.log(`Server is running at port ${port}`);
+    console.log(`Server is running at http://localhost:${port}`);
 });

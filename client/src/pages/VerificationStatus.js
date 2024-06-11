@@ -21,11 +21,13 @@ const VerificationStatus = () => {
                 if (response.data) {
                     setStatus(response.data);
                 } else {
-                    navigate('/', { state: { message: 'You have not submitted a verification request.' } });
+                    alert('You have not submitted a verification request.'); 
+                    navigate('/');
                 }
             } catch (error) {
                 console.error('Error fetching verification status', error);
-                navigate('/', { state: { message: 'You have not submitted a verification request.' } });
+                alert('Error fetching verification status');
+                navigate('/');
             }
         };
 

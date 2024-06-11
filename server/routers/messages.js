@@ -36,7 +36,7 @@ router.get('/:targetName/:category', authenticateToken, (req, res) => {
     }
 
     const query = `
-    SELECT m.id, u.name AS user_name, m.content, m.positive_rating, m.negative_rating, m.created_at, m.users_id, m.is_edited, m.has_answers
+    SELECT m.id, u.name AS user_name, m.content, m.positive_rating, m.negative_rating, m.created_at, m.users_id, m.has_answers
     FROM messages m
     JOIN users u ON m.users_id = u.id
     JOIN users t ON m.target_id = t.id

@@ -84,11 +84,13 @@ const Messages = () => {
                         : msg
                 )
             );
+            alert('Vote submitted successfully');
         } catch (error) {
             if (error.response && (error.response.status === 400 || error.response.status === 403)) {
                 alert(error.response.data.error);
             } else {
                 console.error('Error voting for message', error);
+                alert('Error voting for message');
             }
         }
     };
@@ -103,8 +105,10 @@ const Messages = () => {
                 },
             });
             setMessages(prevMessages => prevMessages.filter(msg => msg.id !== id));
+            alert('Message deleted successfully');
         } catch (error) {
             console.error('Error deleting message', error);
+            alert('Failed to delete message');
         }
     };
 
@@ -128,8 +132,10 @@ const Messages = () => {
             setReplyContent('');
             setReplyFile(null);
             fetchMessages();
+            alert('Reply posted successfully');
         } catch (error) {
             console.error('Error posting reply', error);
+            alert('Failed to post reply');
         }
     };
 
@@ -184,11 +190,20 @@ const Messages = () => {
     return (
         <div className="container mt-5">
             <h2>Messages in {category}</h2>
-            <button className="btn btn-primary mb-3 me-5" onClick={() => navigate(-1)}>Back to Profile</button>
-            <Link to={`/profile/${name}/${category}/create`} className="btn btn-primary mb-3">
-                Add Message
-            </Link>
-            <div className="mb-3">
+            
+            
+            <div className="d-flex justify-content-center w-100 mb-3 ">
+                <button className={`btn ${view === 'unanswered' ? 'btn-primary' : 'btn-outline-primary'} me-2 w-50`} onClick={() => setView('unanswered')}>Unanswered Messages</button>
+                <button className={`btn ${view === 'answered' ? 'btn-primary' : 'btn-outline-primary'} w-50`} onClick={() => setView('answered')}>Answered Messages</button>
+            </div>
+            
+            <div className="d-flex justify-content-between w-100 mb-3">
+                <button className="btn btn-secondary mb-3 me-5 w-25" onClick={() => navigate(`/profile/${name}`)}>Back to Profile</button>
+                <Link to={`/profile/${name}/${category}/create`} className="btn btn-success mb-3 w-25">
+                    Add Message
+                </Link>
+            </div>
+            <div>
                 <button onClick={() => handleSortChange('date')} className={`btn ${sort === 'date' ? 'btn-secondary' : 'btn-outline-secondary'} me-2`}>
                     Sort by Date ({order})
                 </button>
@@ -196,19 +211,16 @@ const Messages = () => {
                     Sort by Rating ({order})
                 </button>
             </div>
-            <div className="mb-3">
-                <button className={`btn ${view === 'unanswered' ? 'btn-primary' : 'btn-outline-primary'} me-2`} onClick={() => setView('unanswered')}>Unanswered Messages</button>
-                <button className={`btn ${view === 'answered' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setView('answered')}>Answered Messages</button>
-            </div>
+                
             {view === 'unanswered' && (
                 <div>
                     <h3>Unanswered Messages</h3>
-                    <ul className="list-group">
+                    <ul className="list-group" >
                         {unansweredMessages.map(message => (
-                            <li key={message.id} className="list-group-item">
+                            <li key={message.id} className="list-group-item" style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}>
                                 <div>
                                     <p><strong>{message.user_name}:</strong> {message.content}</p>
-                                    <p><small>Positive: {message.positive_rating}, Negative: {message.negative_rating}</small></p>
+                                    <p><small>Positive: {message.positive_rating} Negative: {message.negative_rating}</small></p>
                                     <p><small>Posted on: {moment(message.created_at).format('YYYY-MM-DD HH:mm:ss')}</small></p>
                                     <div className="d-flex justify-content-between align-items-center">
                                         <button className="btn btn-success" onClick={() => handleVote(message.id, 'positive')}>Upvote</button>
@@ -220,14 +232,18 @@ const Messages = () => {
                                     </div>
                                     {replyMessageId === message.id && (
                                         <div className="mt-3">
+                                            <label htmlFor="content">Answer:</label>
                                             <textarea
                                                 className="form-control"
+                                                placeholder='Enter answer'
                                                 value={replyContent}
                                                 onChange={(e) => setReplyContent(e.target.value)}
+                                                style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                                             />
                                             <input
                                                 type="file"
                                                 className="form-control mt-2"
+                                                style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                                                 onChange={handleFileChange}
                                             />
                                             <button className="btn btn-success mt-2" onClick={() => handleReply(message.id)}>Send</button>
@@ -244,10 +260,10 @@ const Messages = () => {
                     <h3>Answered Messages</h3>
                     <ul className="list-group">
                         {answeredMessages.map(message => (
-                            <li key={message.id} className="list-group-item">
+                            <li key={message.id} className="list-group-item" style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}>
                                 <div>
                                     <p><strong>{message.user_name}:</strong> {message.content}</p>
-                                    <p><small>Positive: {message.positive_rating}, Negative: {message.negative_rating}</small></p>
+                                    <p><small>Positive: {message.positive_rating} Negative: {message.negative_rating}</small></p>
                                     <p><small>Posted on: {moment(message.created_at).format('YYYY-MM-DD HH:mm:ss')}</small></p>
                                     <div className="d-flex justify-content-between align-items-center">
                                         <button className="btn btn-success" onClick={() => handleVote(message.id, 'positive')}>Upvote</button>

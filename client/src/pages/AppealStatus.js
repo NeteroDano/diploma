@@ -22,6 +22,8 @@ const AppealStatus = () => {
                     setAppealStatus(response.data);
                 } else {
                     setAppealStatus(null);
+                    alert('No appeal submitted.');
+                    navigate('/');
                 }
             } catch (error) {
                 console.error('Error fetching appeal status', error);

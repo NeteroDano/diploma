@@ -19,7 +19,7 @@ const VerificationRequest = () => {
     
         try {
             const token = localStorage.getItem('token');
-             await axios.post('http://localhost:3000/verification/submit', formData, {
+            await axios.post('http://localhost:3000/verification/submit', formData, {
           //  await axios.post('https://diploma-2507928da0ba.herokuapp.com/verification/submit', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -44,9 +44,11 @@ const VerificationRequest = () => {
                         type="text"
                         className="form-control"
                         id="fullName"
+                        placeholder='Enter full name'
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
                 <div className="form-group">
@@ -54,9 +56,11 @@ const VerificationRequest = () => {
                     <textarea
                         className="form-control"
                         id="content"
+                        placeholder='Enter content'
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
                 <div className="form-group">
@@ -67,6 +71,7 @@ const VerificationRequest = () => {
                         value={desiredRole}
                         onChange={(e) => setDesiredRole(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     >
                         <option value="author">Author</option>
                         <option value="studio">Studio</option>
@@ -80,9 +85,10 @@ const VerificationRequest = () => {
                         id="documents"
                         onChange={(e) => setDocument(e.target.files[0])}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary mt-3">Submit</button>
             </form>
         </div>
     );

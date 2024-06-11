@@ -7,25 +7,24 @@ function Register({ handleLogin }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/auth/register', {
+            await axios.post('http://localhost:3000/auth/register', {
                 name,
                 email,
                 password
             });
             handleLogin();
-            setMessage('User registered successfully');
+            alert('User registered successfully');
             navigate('/login');
         } catch (error) {
             if (error.response && error.response.data.errors) {
-                setMessage(error.response.data.errors.map(err => err.msg).join(', '));
+                alert(error.response.data.errors.map(err => err.msg).join(', '));
             } else {
-                setMessage('Error registering user');
+                alert('Error registering user');
             }
         }
     };
@@ -39,36 +38,39 @@ function Register({ handleLogin }) {
                         <label htmlFor="name">Name:</label>
                         <input
                             type="text"
-                            placeholder="Введіть ім'я"
+                            placeholder="Enter name"
                             className="form-control"
                             id="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
+                            style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email:</label>
                         <input
                             type="email"
-                            placeholder='Введіть пошту'
+                            placeholder="Enter email"
                             className="form-control"
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
+                            style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
-                            placeholder="Введіть пароль"
+                            placeholder="Enter password"
                             className="form-control"
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                            style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                         />
                     </div>
                     <div className="d-flex justify-content-between">
@@ -76,7 +78,6 @@ function Register({ handleLogin }) {
                     <button type="submit" className="btn btn-success mt-3">Register</button>
                     </div>
                 </form>
-                {message && <p className="mt-3">{message}</p>}
             </div>
         </div>
     );

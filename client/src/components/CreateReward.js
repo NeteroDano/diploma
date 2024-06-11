@@ -28,9 +28,11 @@ const CreateReward = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            alert('Reward created successfully');
             navigate('/rewards');
         } catch (error) {
             console.error('Error creating reward', error);
+            alert('Failed to create reward');
         }
     };
 
@@ -43,10 +45,12 @@ const CreateReward = () => {
                     <input
                         type="text"
                         id="name"
+                        placeholder='Enter name'
                         className="form-control"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
                 <div className="form-group">
@@ -54,10 +58,12 @@ const CreateReward = () => {
                     <input
                         type="text"
                         id="description"
+                        placeholder='Enter description'
                         className="form-control"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
                 <div className="form-group">
@@ -68,6 +74,7 @@ const CreateReward = () => {
                         value={conditionType}
                         onChange={(e) => setConditionType(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     >
                         <option value="">Select Condition Type</option>
                         <option value="messages_count">Messages Count</option>
@@ -80,10 +87,12 @@ const CreateReward = () => {
                     <input
                         type="number"
                         id="conditionValue"
+                        placeholder='Enter condition value'
                         className="form-control"
                         value={conditionValue}
                         onChange={(e) => setConditionValue(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
                 <div className="form-group">
@@ -94,9 +103,10 @@ const CreateReward = () => {
                         className="form-control"
                         accept="image/*"
                         onChange={(e) => setImage(e.target.files[0])}
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Submit</button>
+                <button type="submit" className="btn btn-success mt-3">Submit</button>
             </form>
         </div>
     );

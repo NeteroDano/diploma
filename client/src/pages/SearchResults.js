@@ -3,11 +3,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchResults = () => {
   const location = useLocation();
-  const { results/* , role */ } = location.state || { results: []/* , role: '' */ };
+  const { results } = location.state || { results: [] };
   const navigate = useNavigate();
 
   const handleResultClick = (name) => {
-    navigate(`/profile/${name}`);
+    try {
+        navigate(`/profile/${name}`);
+    } catch (error) {
+        console.error('Error navigating to profile', error);
+        alert('Failed to navigate to profile');
+    }
   };
 
   return (

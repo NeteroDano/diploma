@@ -22,6 +22,7 @@ const Rewards = () => {
             setRewards(response.data);
         } catch (error) {
             console.error('Error fetching rewards', error);
+            alert('Failed to fetch rewards');
         }
     };
 
@@ -37,6 +38,7 @@ const Rewards = () => {
             setIsAdmin(response.data.role === 'admin');
         } catch (error) {
             console.error('Error fetching user role', error);
+            alert('Failed to fetch user role');
         }
     };
 
@@ -50,8 +52,10 @@ const Rewards = () => {
                 },
             });
             setRewards(prevRewards => prevRewards.filter(reward => reward.id !== id));
+            alert('Reward deleted successfully');
         } catch (error) {
             console.error('Error deleting reward', error);
+            alert('Failed to delete reward');
         }
     };
 

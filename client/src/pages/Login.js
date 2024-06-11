@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 function Login({ handleLogin }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -19,16 +18,16 @@ function Login({ handleLogin }) {
             });
             localStorage.setItem('token', response.data.token);
             handleLogin();
-            setMessage('User logged in successfully');
+            alert('User logged in successfully');
             navigate('/');
         } catch (error) {
             console.log('Login error:', error);
             if (error.response && error.response.data.errors) {
-                setMessage(error.response.data.errors.map(err => err.msg).join(', '));
+                alert(error.response.data.errors.map(err => err.msg).join(', '));
             } else if (error.response) {
-                setMessage(error.response.data);
+                alert(error.response.data);
             } else {
-                setMessage('Error logging in user');
+                alert('Error logging in user');
             }
         }
     };
@@ -42,22 +41,26 @@ function Login({ handleLogin }) {
                         <label htmlFor="email">Email:</label>
                         <input
                             type="email"
+                            placeholder="Enter email"
                             className="form-control"
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
+                            style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
+                            placeholder="Enter password"
                             className="form-control"
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                            style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                         />
                     </div>
                     <div className="d-flex justify-content-between">
@@ -65,7 +68,6 @@ function Login({ handleLogin }) {
                         <button type="submit" className="btn btn-success mt-3">Login</button>
                     </div>
                 </form>
-                {message && <p className="mt-3">{message}</p>}
             </div>
         </div>
     );

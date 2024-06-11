@@ -34,6 +34,7 @@ const VerificationAppeal = () => {
             } else {
                 setErrorMessage('Failed to submit appeal');
             }
+            alert('Failed to submit appeal');
         }
     };
 
@@ -54,6 +55,7 @@ const VerificationAppeal = () => {
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
                 <div className="form-group">
@@ -65,9 +67,10 @@ const VerificationAppeal = () => {
                         onChange={handleFileChange}
                         multiple
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary mt-3">Submit</button>
             </form>
         </div>
     );

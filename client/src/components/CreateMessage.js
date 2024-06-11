@@ -22,9 +22,11 @@ const CreateMessage = () => {
                     'Content-Type': 'application/json',
                 },
             });
+            alert('Message sent successfully');
             navigate(`/profile/${name}/${category}`);
         } catch (error) {
             console.error('Error creating message', error);
+            alert('Failed to send message');
         }
     };
 
@@ -37,12 +39,14 @@ const CreateMessage = () => {
                     <textarea
                         id="content"
                         className="form-control"
+                        placeholder='Enter Message'
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required
+                        style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Submit</button>
+                <button type="submit" className="btn btn-success mt-3">Submit</button>
             </form>
         </div>
     );

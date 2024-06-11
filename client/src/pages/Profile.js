@@ -23,10 +23,13 @@ const Profile = () => {
                 });
                 setProfile(response.data);
                 setBio(response.data.bio || '');
+                alert('Profile fetched successfully');
             } catch (error) {
                 console.error('Error fetching profile', error);
                 if (error.response && error.response.status === 401) {
                     navigate('/login');
+                } else {
+                    alert('Failed to fetch profile');
                 }
             }
         };
@@ -67,8 +70,10 @@ const Profile = () => {
             setProfile(updatedProfile);
             setIsEditing(false);
             setAvatar(null);
+            alert('Profile updated successfully');
         } catch (error) {
             console.error('Error updating profile', error);
+            alert('Failed to update profile');
         }
     };
 
@@ -125,7 +130,7 @@ const Profile = () => {
                                     <div 
                                         className="img-thumbnail" 
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}>
-                                        No avatar available
+                                        No avatar added yet
                                     </div>
                                 )}
                             </div>
@@ -139,6 +144,7 @@ const Profile = () => {
                                                 className="form-control"
                                                 value={bio}
                                                 onChange={(e) => setBio(e.target.value)}
+                                                style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                                             />
                                         </div>
                                         <div className="form-group">
@@ -149,6 +155,7 @@ const Profile = () => {
                                                 className="form-control"
                                                 accept="image/*"
                                                 onChange={handleFileChange}
+                                                style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                                             />
                                         </div>
                                         <button type="button" className="btn btn-primary mt-3" onClick={handleSave}>
@@ -163,7 +170,7 @@ const Profile = () => {
                                         <p><strong>Name:</strong> {profile.name}</p>
                                         <p><strong>Email:</strong> {profile.email}</p>
                                         <p><strong>Role:</strong> {profile.role}</p>
-                                        <p><strong>Bio:</strong> {profile.bio || 'No bio available'}</p>
+                                        <p><strong>Bio:</strong> {profile.bio || 'No bio added yet'}</p>
                                         <h3>Rewards:</h3>
                                         <ul className="list-group">
                                             {profile.rewards && profile.rewards.length > 0 ? (
@@ -181,12 +188,14 @@ const Profile = () => {
                                                 <p>No rewards available</p>
                                             )}
                                         </ul>
-                                        <button className="btn btn-primary mt-3" onClick={handleEdit}>
-                                            Edit Profile
-                                        </button>
-                                        <button className="btn btn-success mt-3 ml-2" onClick={checkRewards}>
-                                            Check Rewards
-                                        </button>
+                                        <div className="d-flex mt-3 justify-content-between align-items-center">
+                                            <button className="btn btn-primary" onClick={handleEdit}>
+                                                Edit Profile
+                                            </button>
+                                            <button className="btn btn-success" onClick={checkRewards}>
+                                                Check Rewards
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
                             </div>

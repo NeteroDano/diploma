@@ -48,14 +48,14 @@ const UserProfile = () => {
                                     <div 
                                         className="img-thumbnail" 
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}>
-                                        No avatar available
+                                        No avatar added yet
                                     </div>
                                 )}
                             </div>
                             <div className="flex-grow-1 ml-4">
                                 <p><strong>Name:</strong> {profile.name}</p>
                                 <p><strong>Role:</strong> {profile.role}</p>
-                                <p><strong>Bio:</strong> {profile.bio || 'No bio available'}</p>
+                                <p><strong>Bio:</strong> {profile.bio || 'No bio added yet'}</p>
                             </div>
                         </div>
                     </div>
@@ -64,13 +64,17 @@ const UserProfile = () => {
                         <div className="card mt-4">
                             <div className="card-body">
                                 <h3>Messages</h3>
-                                <ul className="nav nav-tabs">
+                                <div className="d-flex gap-2">
                                     {categories.map(category => (
-                                        <li key={category} className="nav-item">
-                                            <Link className="nav-link" to={`/profile/${name}/${category}`}>{category}</Link>
-                                        </li>
+                                        <Link 
+                                            key={category} 
+                                            className="btn btn-primary flex-grow-1" 
+                                            to={`/profile/${name}/${category}`}
+                                        >
+                                            {category.charAt(0).toUpperCase() + category.slice(1)}
+                                        </Link>
                                     ))}
-                                </ul>
+                                </div>
                                 <Routes>
                                     <Route path="/:category" element={<Messages />} />
                                     <Route path="/:category/create" element={<CreateMessage />} />
