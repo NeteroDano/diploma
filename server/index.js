@@ -17,7 +17,17 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 
-app.use(cors());
+const corsOptions = {
+    origin: (origin, callback) => {
+      if (!origin || origin.startsWith('http://localhost')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  };
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/verification_docs', express.static(path.join(__dirname, 'verification_docs')));
@@ -35,7 +45,7 @@ app.use('/rewards', rewardsRouter);
 
 
 app.get('/', (req, res) => {
-    res.send('Welcome to the Web Application!');
+    res.send('Welcome to the Web Application AniFans!');
 });
 
 app.listen(port, () => {
