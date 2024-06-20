@@ -5,7 +5,6 @@ const path = require('path');
 const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlewares');
 const multer = require('multer');
 
-// Налаштування multer для збереження файлів з оригінальними іменами
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../rewards/'))
@@ -31,7 +30,6 @@ const rewardUpload = multer({
 });
 
 
-// Створення нової винагороди
 router.post('/', authenticateToken, authorizeRole(['admin']), rewardUpload.single('image'), (req, res) => {
     const { name, description, condition_type, condition_value } = req.body;
     const userId = req.user.id;
@@ -52,14 +50,12 @@ router.post('/', authenticateToken, authorizeRole(['admin']), rewardUpload.singl
     });
 });
 
-// Відображення зображень винагород
 router.get('/images/:filename', (req, res) => {
     const { filename } = req.params;
     const filePath = path.join(__dirname, '../rewards', filename);
     res.sendFile(filePath);
 });
 
-// Отримання усіх винагород
 router.get('/', authenticateToken, (req, res) => {
     const getRewardsQuery = `SELECT * FROM rewards`;
     db.query(getRewardsQuery, (err, results) => {
@@ -72,7 +68,6 @@ router.get('/', authenticateToken, (req, res) => {
     });
 });
 
-// Видалення винагороди
 router.delete('/:rewardId', authenticateToken, authorizeRole(['admin']), (req, res) => {
     const { rewardId } = req.params;
 
@@ -99,7 +94,6 @@ router.delete('/:rewardId', authenticateToken, authorizeRole(['admin']), (req, r
     });
 });
 
-// Перевірка умов та отримання винагород
 const checkAndGrantRewards = (userId) => {
     const getConditionsQuery = `
         SELECT r.id AS reward_id, r.condition_type, r.condition_value,
@@ -143,7 +137,6 @@ const checkAndGrantRewards = (userId) => {
     });
 };
 
-// Маршрут для перевірки умов та отримання винагород
 router.post('/check-rewards', authenticateToken, (req, res) => {
     const userId = req.user.id;
 

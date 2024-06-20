@@ -5,7 +5,6 @@ const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlew
 const multer = require('multer');
 const path = require('path');
 
-// Налаштування multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const answerPath = path.join(__dirname, '../uploads/');
@@ -20,7 +19,6 @@ const storage = multer.diskStorage({
     }
 });
 
-// Обмеження типів файлів
 const answerFileFilter = (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
     if (allowedTypes.includes(file.mimetype)) {
@@ -35,7 +33,6 @@ const answerUpload = multer({
     fileFilter: answerFileFilter,
 });
 
-// Додавання відповіді
 router.post('/', authenticateToken, answerUpload.single('file'), authorizeRole(['author', 'studio']), (req, res) => {
     const { message_id, content } = req.body;
     const user_id = req.user.id;
@@ -93,7 +90,6 @@ router.post('/', authenticateToken, answerUpload.single('file'), authorizeRole([
     });
 });
 
-// Отримання відповідей для повідомлення
 router.get('/messages/:messageId', authenticateToken, (req, res) => {
     const { messageId } = req.params;
 

@@ -5,7 +5,6 @@ const multer = require('multer');
 const path = require('path');
 const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlewares');
 
-// Налаштування multer для завантаження файлів
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const verificationPath = path.join(__dirname, '../verification_docs/');
@@ -20,7 +19,6 @@ const storage = multer.diskStorage({
     }
 });
 
-// Фільтр для файлів
 const verificationFileFilter = (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
     if (allowedTypes.includes(file.mimetype)) {
@@ -35,7 +33,6 @@ const verificationUpload = multer({
     fileFilter: verificationFileFilter, 
 });
 
-// Маршрут для подання заявки на верифікацію
 router.post('/submit', authenticateToken, authorizeRole(['user']), verificationUpload.array('documents', 10), (req, res) => {
     const userId = req.user.id;
     const { full_name, content, desired_role } = req.body;
@@ -78,7 +75,6 @@ router.post('/submit', authenticateToken, authorizeRole(['user']), verificationU
     });
 });
 
-// Маршрут для отримання статусу заявки на верифікацію
 router.get('/status', authenticateToken, (req, res) => {
     const userId = req.user.id;
 
@@ -100,7 +96,6 @@ router.get('/status', authenticateToken, (req, res) => {
     });
 });
 
-// Маршрут для адміністрування верифікаційних заявок
 router.get('/admin/requests', authenticateToken, authorizeRole(['admin']), (req, res) => {
     const selectQuery = `
         SELECT v.id, u.name AS user_name, v.full_name, v.content, v.documents, v.status, v.desired_role, v.created_at, v.verified_at
@@ -118,7 +113,6 @@ router.get('/admin/requests', authenticateToken, authorizeRole(['admin']), (req,
     });
 });
 
-// Маршрут для верифікації або відмови у верифікації
 router.post('/verify/:id', authenticateToken, authorizeRole(['admin']), (req, res) => {
     const { id } = req.params;
     const { status, message = '' } = req.body;

@@ -5,7 +5,6 @@ const multer = require('multer');
 const path = require('path');
 const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlewares');
 
-// Налаштування multer для завантаження файлів
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const appealPath = path.join(__dirname, '../verification_docs/');
@@ -34,7 +33,6 @@ const appealUpload = multer({
     fileFilter: appealFileFilter,
 });
 
-// Маршрут для подання апеляції
 router.post('/submit', authenticateToken, appealUpload.array('documents', 10), (req, res) => {
     const userId = req.user.id;
     const { content } = req.body;
@@ -91,7 +89,6 @@ router.post('/submit', authenticateToken, appealUpload.array('documents', 10), (
     });
 });
 
-// Маршрут для отримання останньої апеляції
 router.get('/status/latest', authenticateToken, (req, res) => {
     const userId = req.user.id;
 
@@ -115,7 +112,6 @@ router.get('/status/latest', authenticateToken, (req, res) => {
     });
 });
 
-// Маршрут для адміністрування апеляцій
 router.get('/admin/requests', authenticateToken, authorizeRole(['admin']), (req, res) => {
     const selectQuery = `
         SELECT a.id, a.appeal_content, a.appeal_at, a.appeal_status, a.appeal_admin_message, a.appeal_documents,
@@ -136,7 +132,6 @@ router.get('/admin/requests', authenticateToken, authorizeRole(['admin']), (req,
     });
 });
 
-// Маршрут для прийняття або відхилення апеляції
 router.post('/verify/:id', authenticateToken, authorizeRole(['admin']), (req, res) => {
     const { id } = req.params;
     const { status, message = '' } = req.body;

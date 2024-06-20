@@ -6,7 +6,6 @@ const { check, validationResult } = require('express-validator');
 const db = require('../data/db');
 const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlewares');
 
-// Реєстрація
 router.post('/register', [
     check('name')
         .not().isEmpty().withMessage('Name is required')
@@ -62,7 +61,6 @@ router.post('/register', [
     });
 });
 
-// Вхід
 router.post('/login', [
     check('email').isEmail().withMessage('Valid email is required'),
     check('password').isLength({ min: 6, max: 14 }).withMessage('Password must be between 6 and 14 characters long')

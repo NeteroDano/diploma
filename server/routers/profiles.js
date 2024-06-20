@@ -6,7 +6,6 @@ const path = require('path');
 const fs = require('fs');
 const { authenticateToken, validateId } = require('../middlewares/authMiddlewares');
 
-// Налаштування multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const uploadPath = path.join(__dirname, '../uploads/');
@@ -21,7 +20,6 @@ const storage = multer.diskStorage({
     }
 });
 
-// Фільтр для завантаження файлів аватарів
 const profileFileFilter = (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
     if (allowedTypes.includes(file.mimetype)) {
@@ -36,7 +34,6 @@ const profileUpload = multer({
     fileFilter: profileFileFilter,
 });
 
-// Видалення старого аватара
 const deleteOldAvatar = (oldAvatar) => {
     if (oldAvatar) {
         const oldAvatarPath = path.join(__dirname, '../uploads/', oldAvatar);
@@ -50,7 +47,6 @@ const deleteOldAvatar = (oldAvatar) => {
     }
 };
 
-// Отримання профілю користувача
 router.get('/me', authenticateToken, (req, res) => {
     const userId = req.user.id;
 
@@ -94,7 +90,6 @@ router.get('/me', authenticateToken, (req, res) => {
     });
 });
 
-// Оновлення профілю користувача з можливістю завантаження аватара
 router.put('/me', authenticateToken, validateId, profileUpload.single('avatar'), (req, res) => {
     const userId = req.user.id;
     const { bio } = req.body;
@@ -147,7 +142,6 @@ router.put('/me', authenticateToken, validateId, profileUpload.single('avatar'),
     });
 });
 
-// Отримання профілю користувача за іменем
 router.get('/:name', authenticateToken, (req, res) => {
     const { name } = req.params;
 

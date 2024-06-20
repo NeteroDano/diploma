@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// Middleware для перевірки токена
 function authenticateToken(req, res, next) {
     const authHeader = req.header('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -19,7 +18,6 @@ function authenticateToken(req, res, next) {
     }
 }
 
-// Middleware для перевірки ролі
 function authorizeRole(roles) {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
@@ -29,7 +27,6 @@ function authorizeRole(roles) {
     };
 }
 
-// Middleware для перевірки валідності ID
 function validateId(req, res, next) {
     const userId = req.user.id;
     if (!Number.isInteger(parseInt(userId))) {

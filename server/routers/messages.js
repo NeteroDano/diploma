@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require('../data/db');
 const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlewares');
 
-// Отримання всіх повідомлень для автора/студії за категорією
 router.get('/:targetName/:category', authenticateToken, (req, res) => {
     const { targetName, category } = req.params;
     const { sort = 'date', order = 'desc', view } = req.query;
@@ -53,7 +52,6 @@ router.get('/:targetName/:category', authenticateToken, (req, res) => {
     });
 });
 
-// Додавання нового повідомлення
 router.post('/', authenticateToken, (req, res) => {
     const { targetName, category, content } = req.body;
     const userId = req.user.id;
@@ -101,7 +99,6 @@ router.post('/', authenticateToken, (req, res) => {
     });
 });
 
-// Голосування за повідомлення
 router.post('/:messageId/rate', authenticateToken, (req, res) => {
     const { messageId } = req.params;
     const { rating } = req.body;
@@ -163,7 +160,6 @@ router.post('/:messageId/rate', authenticateToken, (req, res) => {
     });
 });
 
-// Видалення повідомлення
 router.delete('/:messageId', authenticateToken, authorizeRole(['admin']), (req, res) => {
     const { messageId } = req.params;
 

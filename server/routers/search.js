@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require('../data/db');
 const { authenticateToken } = require('../middlewares/authMiddlewares');
 
-// Пошук користувачів за ролями
 router.get('/', authenticateToken, (req, res) => {
     const { role, query } = req.query;
 
