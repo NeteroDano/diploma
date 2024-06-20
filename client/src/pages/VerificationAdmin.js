@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Container, Button, Form, Alert } from 'react-bootstrap';
+import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const VerificationAdmin = () => {
@@ -96,15 +97,15 @@ const VerificationAdmin = () => {
                                 <Card.Text><strong>Content:</strong> {verification.content}</Card.Text>
                                 <Card.Text><strong>Status:</strong> {verification.status}</Card.Text>
                                 <Card.Text><strong>Desired Role:</strong> {verification.desired_role}</Card.Text>
-                                <Card.Text><strong>Created At:</strong> {verification.created_at}</Card.Text>
-                                <Card.Text><strong>Verified At:</strong> {verification.verified_at || 'Not verified yet'}</Card.Text>
+                                <Card.Text><strong>Created At:</strong> {moment(verification.created_at).format('YYYY-MM-DD HH:mm:ss')}</Card.Text>
+                                <Card.Text><strong>Verified At:</strong> {verification.verified_at ? moment(verification.verified_at).format('YYYY-MM-DD HH:mm:ss') : 'Not verified yet'}</Card.Text>
                                 {verification.documents && (
                                     <Card.Text>
                                         <strong>Documents:</strong> 
                                         {verification.documents.split(',').map((doc, index) => (
                                             <div key={index}>
                                                 {doc.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
-                                                 <img src={`http://localhost:3000/uploads/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
+                                                 <img src={`http://localhost:3000/verification_docs/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
                                                 ) : (
                                                  <a href={`http://localhost:3000/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
                                             )}
@@ -146,7 +147,7 @@ const VerificationAdmin = () => {
                             <Card.Body>
                                 <Card.Title>Appeal Request</Card.Title>
                                 <Card.Text><strong>Appeal Content:</strong> {appeal.appeal_content}</Card.Text>
-                                <Card.Text><strong>Appeal Submitted At:</strong> {appeal.appeal_at}</Card.Text>
+                                <Card.Text><strong>Appeal Submitted At:</strong> {moment(appeal.appeal_at).format('YYYY-MM-DD HH:mm:ss')}</Card.Text>
                                 <Card.Text><strong>Appeal Status:</strong> {appeal.appeal_status}</Card.Text>
                                 <Card.Text><strong>Appeal Admin Message:</strong> {appeal.appeal_admin_message}</Card.Text>
                                 {appeal.appeal_documents && (
@@ -155,7 +156,7 @@ const VerificationAdmin = () => {
                                         {appeal.appeal_documents.split(',').map((doc, index) => (
                                             <div key={index}>
                                                 {doc.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
-                                                 <img src={`http://localhost:3000/uploads/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
+                                                 <img src={`http://localhost:3000/verification_docs/${doc}`} alt={`Document ${index + 1}`} className="img-thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px' }} />
                                                 ) : (
                                                  <a href={`http://localhost:3000/verification_docs/${doc}`} target="_blank" rel="noopener noreferrer">Download Document {index + 1}</a>
                                             )}

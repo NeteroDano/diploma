@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Card, Container, Alert } from 'react-bootstrap';
+import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AppealStatus = () => {
@@ -12,7 +13,7 @@ const AppealStatus = () => {
         const fetchAppealStatus = async () => {
             const token = localStorage.getItem('token');
             try {
-                 const response = await axios.get('http://localhost:3000/appeals/status/latest', {
+                const response = await axios.get('http://localhost:3000/appeals/status/latest', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -29,12 +30,12 @@ const AppealStatus = () => {
                 setAppealStatus(null);
             }
         };
-
+    
         fetchAppealStatus();
     }, [navigate]);
 
     if (!appealStatus) {
-        return <div>Loading...</div>;
+        return <div>Appeal request was not send</div>;
     }
 
     return (

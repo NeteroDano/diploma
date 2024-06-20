@@ -34,10 +34,10 @@ const UserProfile = () => {
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body d-flex">
-                            <div className="mr-4">
+                            <div className="mr-4 flex-shrink-0" style={{ width: '150px', height: '150px' }}>
                                 {profile.avatar ? (
                                     <img 
-                                         src={profile.avatar.startsWith('blob:') ? profile.avatar : `http://localhost:3000/uploads/${profile.avatar}`} 
+                                        src={profile.avatar.startsWith('blob:') ? profile.avatar : `http://localhost:3000/uploads/${profile.avatar}`} 
                                         alt="Avatar" 
                                         className="img-thumbnail"
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}

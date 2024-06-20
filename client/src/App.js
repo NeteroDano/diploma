@@ -98,7 +98,9 @@ function App() {
                                         <NavDropdown.Item as={Link} to="/verification/status">Verification Status</NavDropdown.Item>
                                         <NavDropdown.Item as={Link} to="/verification/appeal">Verification Appeal</NavDropdown.Item>
                                         <NavDropdown.Item as={Link} to="/appeal/status">Appeal Status</NavDropdown.Item>
-                                        <NavDropdown.Item as={Link} to="/admin/verification">Verification Admin</NavDropdown.Item>
+                                        {role === 'admin' && (
+                                            <NavDropdown.Item as={Link} to="/admin/verification">Verification Admin</NavDropdown.Item>
+                                        )}
                                     </NavDropdown>
                                     <NavDropdown title="Rewards" id="rewards-nav-dropdown">
                                         <NavDropdown.Item as={Link} to="/rewards">View Rewards</NavDropdown.Item>

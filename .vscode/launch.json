@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Запустити сервер",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/server/index.js", // Замість 'server/index.js' вкажіть шлях до вашого основного файлу сервера
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+      }
+    ]
+  }
+  

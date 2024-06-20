@@ -8,22 +8,49 @@ const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlew
 // Налаштування multer для завантаження файлів
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../verification_docs/');
+        const verificationPath = path.join(__dirname, '../verification_docs/');
+        console.log('Uploading file to:', verificationPath);
+        cb(null, verificationPath); 
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const fileName = uniqueSuffix + '-' + file.originalname;
+        console.log('Saving file as:', fileName);
+        cb(null, fileName);
     }
 });
-const upload = multer({ storage: storage });
+
+// Фільтр для файлів
+const verificationFileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type. Only JPEG, JPG, PNG, and GIF are allowed.'));
+    }
+};
+
+const verificationUpload = multer({
+    storage: storage,
+    fileFilter: verificationFileFilter, 
+});
 
 // Маршрут для подання заявки на верифікацію
-router.post('/submit', authenticateToken, upload.single('documents'), authorizeRole(['user']), (req, res) => {
+router.post('/submit', authenticateToken, authorizeRole(['user']), verificationUpload.array('documents', 10), (req, res) => {
     const userId = req.user.id;
     const { full_name, content, desired_role } = req.body;
-    const documents = req.file ? req.file.filename : null;
+    const documents = req.files.map(file => file.filename);
 
-    if (!full_name || !content || !desired_role || !documents) {
+    if (!full_name || !content || !desired_role || documents.length === 0) {
         return res.status(400).json({ error: 'Full name, content, desired role, and documents are required.' });
+    }
+
+    if (full_name.length < 3 || full_name.length > 50) {
+        return res.status(400).json({ error: 'Full name must be between 3 and 50 characters.' });
+    }
+
+    if (content.length < 10 || content.length > 500) {
+        return res.status(400).json({ error: 'Content must be between 10 and 500 characters.' });
     }
 
     const checkQuery = 'SELECT * FROM verifications WHERE users_id = ?';
@@ -41,7 +68,7 @@ router.post('/submit', authenticateToken, upload.single('documents'), authorizeR
             INSERT INTO verifications (users_id, full_name, content, documents, desired_role)
             VALUES (?, ?, ?, ?, ?)
         `;
-        db.query(insertQuery, [userId, full_name, content, documents, desired_role], (err, result) => {
+        db.query(insertQuery, [userId, full_name, content, documents.join(','), desired_role], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Internal server error' });
@@ -102,7 +129,7 @@ router.post('/verify/:id', authenticateToken, authorizeRole(['admin']), (req, re
 
     const updateQuery = `
         UPDATE verifications
-        SET status = ?, verified_at = CURRENT_DATE, admin_message = ?
+        SET status = ?, verified_at = CURRENT_TIMESTAMP, admin_message = ?
         WHERE id = ?
     `;
 

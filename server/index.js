@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const db = require('./data/db');
 const authRouter = require('./routers/auth');
 const profilesRouter = require('./routers/profiles');
 const searchRouter = require('./routers/search');

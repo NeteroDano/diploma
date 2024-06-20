@@ -15,10 +15,24 @@ const storage = multer.diskStorage({
         cb(null, uniqueSuffix + '-' + file.originalname)
     }
 });
-const upload = multer({ storage: storage });
+
+const rewardFileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type. Only JPEG, PNG, and GIF are allowed.'));
+    }
+};
+
+const rewardUpload = multer({ 
+    storage: storage,
+    fileFilter: rewardFileFilter,
+});
+
 
 // Створення нової винагороди
-router.post('/', authenticateToken, authorizeRole(['admin']), upload.single('image'), (req, res) => {
+router.post('/', authenticateToken, authorizeRole(['admin']), rewardUpload.single('image'), (req, res) => {
     const { name, description, condition_type, condition_value } = req.body;
     const userId = req.user.id;
     const image = req.file ? req.file.filename : null;

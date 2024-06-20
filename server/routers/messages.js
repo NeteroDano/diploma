@@ -62,6 +62,10 @@ router.post('/', authenticateToken, (req, res) => {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
+    if (content.length < 10 || content.length > 300) {
+        return res.status(400).json({ error: 'Message length must be between 10 and 300 characters' });
+    }
+
     const getUserQuery = `SELECT id, role FROM users WHERE name = ?`;
     db.query(getUserQuery, [targetName], (err, userResults) => {
         if (err) {

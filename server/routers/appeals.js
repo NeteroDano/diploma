@@ -5,20 +5,37 @@ const multer = require('multer');
 const path = require('path');
 const { authenticateToken, authorizeRole } = require('../middlewares/authMiddlewares');
 
-// Налаштування multer
+// Налаштування multer для завантаження файлів
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../verification_docs/')
+        const appealPath = path.join(__dirname, '../verification_docs/');
+        console.log('Uploading file to:', appealPath);
+        cb(null, appealPath); 
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname)
+        const fileName = uniqueSuffix + '-' + file.originalname;
+        console.log('Saving file as:', fileName);
+        cb(null, fileName);
     }
 });
-const upload = multer({ storage: storage });
+
+const appealFileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type. Only JPEG, JPG, PNG, and GIF are allowed.'));
+    }
+};
+
+const appealUpload = multer({ 
+    storage: storage,
+    fileFilter: appealFileFilter,
+});
 
 // Маршрут для подання апеляції
-router.post('/submit', authenticateToken, upload.array('documents', 10), (req, res) => {
+router.post('/submit', authenticateToken, appealUpload.array('documents', 10), (req, res) => {
     const userId = req.user.id;
     const { content } = req.body;
     const documents = req.files.map(file => file.filename);
@@ -27,7 +44,11 @@ router.post('/submit', authenticateToken, upload.array('documents', 10), (req, r
         return res.status(400).json({ error: 'Content and documents are required for an appeal.' });
     }
 
-    const checkQuery = 'SELECT id, verified_at FROM verifications WHERE users_id = ? ORDER BY verified_at DESC LIMIT 1';
+    if (content.length < 10 || content.length > 200) {
+        return res.status(400).json({ error: 'Content must be between 10 and 200 characters.' });
+    }
+
+    const checkQuery = 'SELECT id, verified_at, status FROM verifications WHERE users_id = ? ORDER BY verified_at DESC LIMIT 1';
     db.query(checkQuery, [userId], (err, results) => {
         if (err) {
             console.error(err);
@@ -41,37 +62,31 @@ router.post('/submit', authenticateToken, upload.array('documents', 10), (req, r
         const verification = results[0];
         const verifications_id = verification.id;
 
-        // Перевірка наявності відхиленої апеляції
-        const checkAppealQuery = 'SELECT id FROM appeals WHERE verifications_id = ? AND appeal_status = "rejected"';
-        db.query(checkAppealQuery, [verifications_id], (err, appealResults) => {
+        if (verification.status === 'pending') {
+            return res.status(400).json({ error: 'Cannot submit an appeal while verification request is pending.' });
+        }
+
+        if (verification.status !== 'rejected') {
+            return res.status(400).json({ error: 'An appeal can only be submitted after a rejection.' });
+        }
+
+        const now = new Date();
+        const verifiedAt = new Date(verification.verified_at);
+
+        if (now - verifiedAt < 24 * 60 * 60 * 1000 /*1 * 60 * 1000*/) {
+            return res.status(400).json({ error: 'You can submit an appeal only after 24 hours of verification.' });
+        }
+
+        const insertQuery = `
+            INSERT INTO appeals (users_id, verifications_id, appeal_content, appeal_at, appeal_documents, appeal_status)
+            VALUES (?, ?, ?, ?, ?, 'pending')
+        `;
+        db.query(insertQuery, [userId, verifications_id, content, now, documents.join(',')], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Internal server error' });
             }
-
-            if (appealResults.length > 0) {
-                return res.status(400).json({ error: 'You cannot submit a new appeal after a rejection.' });
-            }
-
-            const now = new Date();
-            const verifiedAt = new Date(verification.verified_at);
-
-            // Перевірка, чи пройшло 24 години після верифікації
-            if (now - verifiedAt < 24 * 60 * 60 * 1000 /*1 * 60 * 1000*/) {
-                return res.status(400).json({ error: 'You can submit an appeal only after 24 hours of verification.' });
-            }
-
-            const insertQuery = `
-                INSERT INTO appeals (users_id, verifications_id, appeal_content, appeal_at, appeal_documents)
-                VALUES (?, ?, ?, ?, ?)
-            `;
-            db.query(insertQuery, [userId, verifications_id, content, now, documents.join(',')], (err, result) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).json({ error: 'Internal server error' });
-                }
-                res.status(200).json({ message: 'Appeal submitted successfully' });
-            });
+            res.status(200).json({ message: 'Appeal submitted successfully' });
         });
     });
 });

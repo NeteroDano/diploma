@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import moment from 'moment-timezone';
 import '../profile.css';
 
 const Profile = () => {
@@ -15,7 +16,7 @@ const Profile = () => {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem('token');
-                 const response = await axios.get('http://localhost:3000/profiles/me', {
+                const response = await axios.get('http://localhost:3000/profiles/me', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -26,8 +27,6 @@ const Profile = () => {
                 console.error('Error fetching profile', error);
                 if (error.response && error.response.status === 401) {
                     navigate('/login');
-                } else {
-                    alert('Failed to fetch profile');
                 }
             }
         };
@@ -49,21 +48,20 @@ const Profile = () => {
         }
 
         try {
-            // const token = localStorage.getItem('token');
-            // const response = await axios.put(
-            //     // 'http://localhost:3000/profiles/me,'
-            //     'https://diploma-2507928da0ba.herokuapp.com/profiles/me',
-            //     formData,
-            //     {
-            //         headers: {
-            //             Authorization: `Bearer ${token}`,
-            //             'Content-Type': 'multipart/form-data',
-            //         },
-            //     }
-            // );
+            const token = localStorage.getItem('token');
+            await axios.put(
+                'http://localhost:3000/profiles/me',
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
             const updatedProfile = { ...profile, bio };
             if (avatar) {
-                updatedProfile.avatar = URL.createObjectURL(avatar);
+                updatedProfile.avatar = avatar.name;
             }
             setProfile(updatedProfile);
             setIsEditing(false);
@@ -88,13 +86,13 @@ const Profile = () => {
     const checkRewards = async () => {
         const token = localStorage.getItem('token');
         try {
-             await axios.post('http://localhost:3000/rewards/check-rewards', {}, {
+            await axios.post('http://localhost:3000/rewards/check-rewards', {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             alert('Rewards checked successfully');
-             const updatedProfileResponse = await axios.get('http://localhost:3000/profiles/me', {
+            const updatedProfileResponse = await axios.get('http://localhost:3000/profiles/me', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -113,10 +111,10 @@ const Profile = () => {
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body d-flex">
-                            <div className="mr-4">
+                            <div className="mr-4 flex-shrink-0" style={{ width: '150px', height: '150px' }}>
                                 {profile.avatar ? (
                                     <img 
-                                         src={profile.avatar.startsWith('blob:') ? profile.avatar : `http://localhost:3000/uploads/${profile.avatar}`} 
+                                        src={profile.avatar.startsWith('blob:') ? profile.avatar : `http://localhost:3000/uploads/${profile.avatar}`}
                                         alt="Avatar" 
                                         className="img-thumbnail"
                                         style={{ width: '150px', height: '150px', objectFit: 'cover' }}
@@ -153,12 +151,14 @@ const Profile = () => {
                                                 style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                                             />
                                         </div>
-                                        <button type="button" className="btn btn-primary mt-3" onClick={handleSave}>
-                                            Save
-                                        </button>
-                                        <button type="button" className="btn btn-secondary mt-3 ml-2" onClick={handleCancel}>
-                                            Cancel
-                                        </button>
+                                        <div className="d-flex mt-3 justify-content-between align-items-center">
+                                            <button type="button" className="btn btn-secondary mt-3 ml-2" onClick={handleCancel}>
+                                                Cancel
+                                            </button>
+                                            <button type="button" className="btn btn-primary mt-3" onClick={handleSave}>
+                                                Save
+                                            </button>
+                                        </div>
                                     </form>
                                 ) : (
                                     <div>
@@ -172,9 +172,9 @@ const Profile = () => {
                                                 profile.rewards.map(reward => (
                                                     <li key={reward.id} className="list-group-item">
                                                         <p><strong>Description:</strong> {reward.description}</p>
-                                                        <p><strong>Obtained At:</strong> {new Date(reward.obtained_at).toLocaleString()}</p>
+                                                        <p><strong>Obtained At:</strong> {moment.tz(reward.obtained_at, 'UTC').format('YYYY-MM-DD HH:mm:ss')}</p>
                                                         {reward.image && (
-                                                             <img src={`http://localhost:3000/rewards/images/${reward.image}`} alt="Reward" className="img-thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+                                                            <img src={`http://localhost:3000/rewards/images/${reward.image}`} alt="Reward" className="img-thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
                                                         )}
                                                     </li>
                                                 ))

@@ -9,17 +9,16 @@ const Messages = () => {
     const [sort, setSort] = useState('date');
     const [order, setOrder] = useState('desc');
     const [isAdmin, setIsAdmin] = useState(false);
+    const [userRole, setUserRole] = useState('');
+    const [userName, setUserName] = useState('');
     const [replyMessageId, setReplyMessageId] = useState(null);
     const [replyContent, setReplyContent] = useState('');
     const [replyFile, setReplyFile] = useState(null);
+    const [replyError, setReplyError] = useState('');
     const [view, setView] = useState('unanswered');
     const [expandedMessageId, setExpandedMessageId] = useState(null);
     const [answers, setAnswers] = useState({});
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     fetchMessages();
-    // }, [name, category, sort, order, view]);
 
     const fetchMessages = useCallback(async () => {
         const token = localStorage.getItem('token');
@@ -38,6 +37,8 @@ const Messages = () => {
                 },
             });
             setIsAdmin(userResponse.data.role === 'admin');
+            setUserRole(userResponse.data.role);
+            setUserName(userResponse.data.name);
         } catch (error) {
             console.error('Error fetching messages', error);
         }
@@ -125,11 +126,17 @@ const Messages = () => {
             setReplyMessageId(null);
             setReplyContent('');
             setReplyFile(null);
+            setReplyError('');
             fetchMessages();
             alert('Reply posted successfully');
         } catch (error) {
             console.error('Error posting reply', error);
-            alert('Failed to post reply');
+            if (error.response && error.response.data && error.response.data.error) {
+                setReplyError(error.response.data.error);
+                alert(error.response.data.error);
+            } else {
+                alert('Failed to post reply');
+            }
         }
     };
 
@@ -157,8 +164,6 @@ const Messages = () => {
         const fileExtension = filePath.split('.').pop().toLowerCase();
         if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
              return <img src={`http://localhost:3000/uploads/${filePath}`} alt="Attached file" style={{ maxWidth: '100%', maxHeight: '400px' }} />;
-        } else if (fileExtension === 'pdf') {
-             return <iframe src={`http://localhost:3000/uploads/${filePath}`} title="Attached file" style={{ width: '100%', height: '400px' }}></iframe>;
         } else {
              return <a href={`http://localhost:3000/uploads/${filePath}`} target="_blank" rel="noopener noreferrer">View attached file</a>;
         }
@@ -219,7 +224,9 @@ const Messages = () => {
                                         {isAdmin && (
                                             <button className="btn btn-danger" onClick={() => handleDelete(message.id)}>Delete</button>
                                         )}
-                                        <button className="btn btn-primary" onClick={() => setReplyMessageId(message.id)}>Reply</button>
+                                        {(userRole === 'author' || userRole === 'studio') && userName === name && (
+                                            <button className="btn btn-primary" onClick={() => setReplyMessageId(message.id)}>Reply</button>
+                                        )}
                                     </div>
                                     {replyMessageId === message.id && (
                                         <div className="mt-3">

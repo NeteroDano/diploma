@@ -8,22 +8,38 @@ const VerificationAppeal = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
+    const validateFields = () => {
+        if (content.length < 10 || content.length > 500) {
+            return 'Content must be between 10 and 500 characters.';
+        }
+        if (documents.length === 0) {
+            return 'At least one document is required.';
+        }
+        return '';
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+
+        const validationError = validateFields();
+        if (validationError) {
+            setErrorMessage(validationError);
+            return;
+        }
+
         const formData = new FormData();
         formData.append('content', content);
         documents.forEach(doc => formData.append('documents', doc));
-
+    
         try {
             const token = localStorage.getItem('token');
-            console.log('Submitting appeal with data:', { content, documents });
-             const response = await axios.post('http://localhost:3000/appeals/submit', formData, {
+            const response = await axios.post('http://localhost:3000/appeals/submit', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log('Server response:', response);
             alert('Appeal submitted successfully');
             navigate('/');
         } catch (error) {
@@ -69,7 +85,7 @@ const VerificationAppeal = () => {
                         style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Submit</button>
+                <button type="submit" className="btn btn-success mt-3">Submit</button>
             </form>
         </div>
     );

@@ -6,20 +6,45 @@ const VerificationRequest = () => {
     const [fullName, setFullName] = useState('');
     const [content, setContent] = useState('');
     const [desiredRole, setDesiredRole] = useState('author');
-    const [document, setDocument] = useState(null);
+    const [documents, setDocuments] = useState([]);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    const validateFields = () => {
+        if (fullName.length < 3 || fullName.length > 50) {
+            return 'Full name must be between 3 and 50 characters.';
+        }
+
+        if (content.length < 10 || content.length > 500) {
+            return 'Content must be between 10 and 500 characters.';
+        }
+
+        if (documents.length === 0) {
+            return 'At least one document is required.';
+        }
+
+        return '';
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+
+        const validationError = validateFields();
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
+
         const formData = new FormData();
         formData.append('full_name', fullName);
         formData.append('content', content);
         formData.append('desired_role', desiredRole);
-        formData.append('documents', document);
-    
+        documents.forEach(doc => formData.append('documents', doc));
+
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:3000/verification/submit', formData, {
+            const response = await axios.post('http://localhost:3000/verification/submit', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -29,13 +54,22 @@ const VerificationRequest = () => {
             navigate('/');
         } catch (error) {
             console.error('Error submitting verification request', error);
-            alert('Failed to submit verification request');
+            if (error.response && error.response.data && error.response.data.error) {
+                setError(error.response.data.error);
+            } else {
+                setError('Unknown error occurred. Please try again.');
+            }
         }
-    };    
+    };
+
+    const handleFileChange = (e) => {
+        setDocuments([...e.target.files]);
+    };
 
     return (
         <div className="container mt-5">
             <h2>Submit Verification Request</h2>
+            {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="fullName">Full Name:</label>
@@ -82,12 +116,13 @@ const VerificationRequest = () => {
                         type="file"
                         className="form-control"
                         id="documents"
-                        onChange={(e) => setDocument(e.target.files[0])}
+                        onChange={handleFileChange}
+                        multiple
                         required
                         style={{ border: '1px solid #ced4da', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Submit</button>
+                <button type="submit" className="btn btn-success mt-3">Submit</button>
             </form>
         </div>
     );
